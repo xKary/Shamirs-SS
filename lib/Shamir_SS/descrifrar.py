@@ -1,14 +1,14 @@
-from Crypto.Cipher import AES
 import gmpy2
 from gmpy2 import mpz
+from Crypto.Cipher import AES
+from constantes import PRIMO
 """
 Descifrar
 -----------------------------------
 Módulo que se encarga de descrifrar
 """
-primo = 7
 
-def polinomioBase(i,valores_x):
+def polinomio_base(i,valores_x):
     """
     Polinomio de base Pi(x)
 
@@ -30,14 +30,14 @@ def polinomioBase(i,valores_x):
     denominador = 1
     for j in range(0,len(valores_x)):
         if j != i:
-            numerador *= gmpy2.f_mod((-1) * valores_x[j],primo)
-            denominador *= gmpy2.f_mod(valores_x[i] - valores_x[j],primo)
+            numerador *= gmpy2.f_mod((-1) * valores_x[j],PRIMO)
+            denominador *= gmpy2.f_mod(valores_x[i] - valores_x[j],PRIMO)
 
-    denoMod = gmpy2.invert(denominador,primo)
+    deno_mod = gmpy2.invert(denominador,PRIMO)
 
-    return int(gmpy2.f_mod((numerador * denoMod),primo))
+    return int(gmpy2.f_mod((numerador * deno_mod),PRIMO))
 
-def interpolacionL(valores_x,valores_y):
+def interpolacion_Larange(valores_x,valores_y):
     """
     Interpolación de Lagrange
 
@@ -57,12 +57,12 @@ def interpolacionL(valores_x,valores_y):
     """
     p = 0;
     for i in range(0,len(valores_x)):
-        pi = polinomioBase(i,valores_x)
-        p += (gmpy2.f_mod((valores_y[i] * pi),primo))
+        pi = polinomio_base(i,valores_x)
+        p += (gmpy2.f_mod((valores_y[i] * pi),PRIMO))
 
-    return int(gmpy2.f_mod(p,primo))
+    return int(gmpy2.f_mod(p,PRIMO))
 
-def descrifrarArch(valores_x,valores_y,archCifrado):
+def descrifrar_archivo(valores_x,valores_y,arch_cifrado):
     """
     Descrifrar archivo
 
@@ -82,8 +82,8 @@ def descrifrarArch(valores_x,valores_y,archCifrado):
     arch
         Archivo descifrado
     """
-    llave = interpolacionL(valores_x,valores_y)
-    #Convertir a bits
-    #llave = llave.to_bytes(llave,'big')
-    archDes = AES.new(llave, AES.MODE_CBC,'This is an IV456')
-    return archDes.decrypt(archCifrado)
+    llave = interpolacion_Larange(valores_x,valores_y)
+    llave_hex = hex(llave)
+    iv = arch_cifrado[:AES.block_size]
+    cipher = AES.new(llave_hex, AES.MODE_CBC,iv)
+    return cipher.decrypt(arch_cifrado[AES.block_size:])
