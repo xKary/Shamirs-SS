@@ -1,28 +1,28 @@
 from getpass import getpass
 
-def menuCifrar():
+def menu_cifrar():
     archivo = input ('Archivo a cifrar: \t')
-    if not archivoExiste(archivo, 'No se encontró el archivo a cifrar'):
+    if not archivo_existe(archivo, 'No se encontró el archivo a cifrar'):
         return
-    archivoCifrado = input ('Archivo de evaluaciones: \t')
-    evaluaciones = leerNatural ('Número de evaluaciones requeridas')
-    necesarios = leerNatural ('Número de puntos necesarios')
+    archivo_cifrado = input ('Archivo de evaluaciones: \t')
+    evaluaciones = leer_natural ('Número de evaluaciones requeridas')
+    necesarios = leer_natural ('Número de puntos necesarios')
     contrasenia = getpass("Contraseña: ")
 
-    cifrar (archivo, archivoCifrado, evaluaciones, necesarios, contrasenia)
+    cifrar (archivo, archivo_cifrado, evaluaciones, necesarios, contrasenia)
 
-def menuDescifrar():
-    archivoCifrado = input ('Archivo a descifrar: \t')
-    if not archivoExiste(archivoCifrado, "No se encontró el archivo a descifrar"):
+def menu_descifrar():
+    archivo_cifrado = input ('Archivo a descifrar: \t')
+    if not archivo_existe(archivo_cifrado, "No se encontró el archivo a descifrar"):
         return
 
-    archivoEvaluaciones = input ('Archivo con evaluaciones: \t')
-    if not archivoExiste(archivoEvaluaciones, "No se econtró el archivo con las evaluaciones"):
+    archivo_evaluaciones = input ('Archivo con evaluaciones: \t')
+    if not archivo_existe(archivo_evaluaciones, "No se econtró el archivo con las evaluaciones"):
         return
 
-    descifrar (archivoCifrado, archivoEvaluaciones)
+    descifrar (archivo_cifrado, archivo_evaluaciones)
 
-def leerNatural(mensaje):
+def leer_natural(mensaje):
     natural = 0
     correcto = false
     while not correcto:
@@ -33,9 +33,9 @@ def leerNatural(mensaje):
             print ('Introduce un natural')
     return natural
 
-def archivoExiste(arch, mensajeError):
+def archivo_existe(arch, mensaje_error):
     if not os.path.isfile (arch):
-        print (mensajeError)
+        print (mensaje_error)
         return false
     return true
 
@@ -54,10 +54,10 @@ while not salir:
 
     if opcion == 'C':
         print ('vamos a cifrar\n')
-        menuCifrar()
+        menu_cifrar()
     elif opcion == 'D':
         print ('vamos a descifrar')
-        menuDescifrar()
+        menu_descifrar()
     elif opcion == 'S':
         salir = True
     else:
