@@ -21,9 +21,6 @@ import Crypto.Random as Random
 from Crypto.Util.Padding import pad
 from .constantes import PRIMO
 
-#python no tiene consts :c
-rand_state = gmpy2.random_state() # puede ser mas limpio?
-
 def cifra(archivo, nombre_cifrado, shares_totales, shares_necesarios, llave):
     """Función de acceso al módulo, dado un archivo lo cifra y produce los shares necesarios para abrirlo
 
@@ -74,7 +71,8 @@ def genera_aleatorios(cantidad):
     """Genera una lista de de longitud _cantidad_ de números aleatorios mpz"""
     numeros_aleatorios = []
     for i in range(0,cantidad):
-        numeros_aleatorios.append(gmpy2.mpz_random(rand_state, PRIMO))
+        aleatorio = Random.random.randint(0,PRIMO)
+        numeros_aleatorios.append(aleatorio)
     return numeros_aleatorios
 
 def evalua_polinomio(x, coeficientes):
