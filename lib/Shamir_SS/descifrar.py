@@ -1,7 +1,7 @@
 import gmpy2
 from gmpy2 import mpz
 from Crypto.Cipher import AES
-from constantes import PRIMO
+from .constantes import PRIMO
 """
 Descifrar
 -----------------------------------
@@ -37,7 +37,7 @@ def polinomio_base(i,valores_x):
 
     return int(gmpy2.f_mod((numerador * deno_mod),PRIMO))
 
-def interpolacion_Larange(valores_x,valores_y):
+def interpolacion_Lagrange(valores_x,valores_y):
     """
     Interpolación de Lagrange
 
@@ -82,7 +82,7 @@ def descrifrar_archivo(valores_x,valores_y,arch_cifrado):
     arch
         Archivo descifrado
     """
-    llave = interpolacion_Larange(valores_x,valores_y)
+    llave = interpolacion_Lagrange(valores_x,valores_y)
     print(llave)
     llave_hex = llave.to_bytes(32, "big")
     iv = arch_cifrado[:AES.block_size]
