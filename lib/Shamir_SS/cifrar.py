@@ -18,10 +18,11 @@ from gmpy2 import mpz
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 import Crypto.Random as Random
+import Crypto.Random.random as rand
 from Crypto.Util.Padding import pad
 from .constantes import PRIMO
 
-def cifra(archivo, nombre_cifrado, shares_totales, shares_necesarios, llave):
+def cifra(contenido, shares_totales, shares_necesarios, llave):
     """Función de acceso al módulo, dado un archivo lo cifra y produce los shares necesarios para abrirlo
 
     archivo: nombre del archivo
@@ -34,13 +35,13 @@ def cifra(archivo, nombre_cifrado, shares_totales, shares_necesarios, llave):
     """
     # El hash que usa mpz es una cadena hexadecimal y el que usa cifrar requiere bytes, por lo que hay que convertirlos
     llave = hash_llave(llave)
-    cifra_archivo(archivo, nombre_cifrado, bytes.fromhex(llave))
+    contenido_cifrado = cifra_archivo(contenido, bytes.fromhex(llave))
     coeficientes = [mpz(llave, base=16)] + genera_aleatorios(shares_necesarios -1)
     shares = []
     for x in genera_aleatorios(shares_totales):
         y = evalua_polinomio(x, coeficientes)
         shares.append((x,y))
-    return shares
+    return (contenido_cifrado, shares)
 
 def hash_llave(password):
     """Hashea de una cadena, la regresa como una cadena hexadecimal"""
@@ -48,11 +49,8 @@ def hash_llave(password):
     h.update(password.encode("utf-8"))# update recibe bytes
     return h.hexdigest()
 
-def cifra_archivo(nombre_archivo, nombre_cifrado, llave):
+def cifra_archivo(contenido, llave):
     """Cifra y escribe archivo"""
-    #abrir archivo y leerlo
-    with open(nombre_archivo) as lector:
-        contenido = lector.read()
     # cifrarlo
     vector_inicial = Random.new().read(AES.block_size)
     cifrado = AES.new(llave, AES.MODE_CBC, vector_inicial)
@@ -60,18 +58,13 @@ def cifra_archivo(nombre_archivo, nombre_cifrado, llave):
     texto_cifrado += cifrado.encrypt(
             pad(contenido.encode("utf-8"), AES.block_size))
 
-    # escribir
-    with open(nombre_cifrado, "wb") as f:
-        f.write(texto_cifrado)
-    # borrar el viejito
-    os.remove(nombre_archivo)
-
+    return texto_cifrado
 
 def genera_aleatorios(cantidad):
     """Genera una lista de de longitud _cantidad_ de números aleatorios mpz"""
     numeros_aleatorios = []
     for i in range(0,cantidad):
-        aleatorio = Random.random.randint(0,PRIMO)
+        aleatorio = rand.randint(0,PRIMO)
         numeros_aleatorios.append(aleatorio)
     return numeros_aleatorios
 

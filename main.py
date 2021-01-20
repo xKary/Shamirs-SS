@@ -3,25 +3,24 @@ from getpass import getpass
 from lib.Shamir_SS import cifrar, descifrar
 
 def menu_cifrar():
-    archivo = input('Archivo a cifrar:                  ')
-    if not archivo_existe(archivo, 'No se encontró el archivo a cifrar'):
+    nombre_cifrado = input('Archivo a cifrar:                  ')
+    if not archivo_existe(nombre_cifrado, 'No se encontró el archivo a cifrar'):
         return
     nombre_arch_evaluaciones = input('Archivo donde se guardarán las evaluaciones:           ')
     n_evaluaciones = leer_natural('Número de evaluaciones requeridas: ')
     necesarios = leer_natural('Número de puntos necesarios:       ')
     contrasenia = getpass('Contraseña:                        ')
 
-    with open(archivo_cifrado) as lector:
-        contenido = lector.read()
+    contenido = leer_archivo(nombre_cifrado)
 
-    (contenido_cifrado, evaluaciones) = cifra (archivo, contenido, n_evaluaciones, necesarios, contrasenia)
+    (contenido_cifrado, evaluaciones) = cifrar.cifra (contenido, n_evaluaciones, necesarios, contrasenia)
 
     # escribir
-    with open(nombre_cifrado, "wb") as f:
-        f.write(contenido_cifrado)
-
-    with open(nombre_arch_evaluaciones, "wb") as f:
-        f.write(evaluaciones)
+    escribir_archivo(nombre_cifrado + ".aes", contenido_cifrado)
+    cadena = ""
+    for (x,y) in evaluaciones:
+        cadena += str(x) + ", " + str(y) + "\n"
+    escribir_archivo(nombre_arch_evaluaciones, cadena.encode())
 
     # borrar el viejito
     os.remove(nombre_cifrado)
@@ -36,21 +35,53 @@ def menu_descifrar():
         return
 
 
-    with open(archivo_evaluaciones) as lector:
-        evaluaciones = lector.read()
+    contenido = leer_archivo(archivo_cifrado)
+    (xs, ys) = leer_evaluaciones(archivo_evaluaciones)
 
-    with open(archivo_cifrado) as lector:
-        contenido = lector.read()
-
-    contenido_descifrado = descifrar (contenido, evaluaciones)
+    contenido_descifrado = descifrar.descifra (contenido, xs, ys)
 
     # escribir
-    with open(nombre_cifrado, "wb") as f:
-        f.write(contenido_descifrado)
-        
+    nom_original = nombre_original(archivo_cifrado)
+    escribir_archivo(nom_original, contenido_descifrado)
+
     # borrar el viejito
     os.remove(archivo_cifrado)
     os.remove(archivo_evaluaciones)
+
+def leer_archivo(nombre):
+    with open(nombre, "rb") as lector:
+        contenido = lector.read()
+    return contenido
+
+def escribir_archivo(nombre, contenido):
+    with open(nombre, "wb") as f:
+        f.write(contenido)
+
+def leer_evaluaciones(archivo_evaluaciones):
+    x = []
+    y = []
+
+    evaluaciones = open(archivo_evaluaciones, "r")
+    while(True):
+        punto = evaluaciones.readline()
+        if not punto:
+            break
+        p = punto.split(", ")
+        x.append(int(p[0]))
+        y.append(int(p[1]))
+        # if not linea:
+        #     break
+    evaluaciones.close()
+
+    if(len(x) == 0 or len(y) == 0 or len(x) != len(y)):
+        raise NameError('El archivo de evaluaciones está incompleto.')
+
+    return (x,y)
+
+def nombre_original(nombre):
+    pos = nombre.rfind(".")
+    nombre_orig = nombre[:pos]
+    return nombre_orig
 
 def leer_natural(mensaje):
     natural = 0
