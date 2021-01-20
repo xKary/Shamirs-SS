@@ -83,10 +83,9 @@ def descrifrar_archivo(valores_x,valores_y,arch_cifrado):
         Archivo descifrado
     """
     llave = interpolacion_Lagrange(valores_x,valores_y)
-    print(llave)
-    llave_b = llave.to_bytes(32, "big")
-    vector_inicial = arch_cifrado[:AES.block_size]
-    cipher = AES.new(llave_b, AES.MODE_CBC,vector_inicial)
+    llave_bytes = bytes.fromhex(hex(llave)[2:])
+    iv = arch_cifrado[:AES.block_size]
+    cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
     return cipher.decrypt(arch_cifrado[AES.block_size:])
 
 def descifrar(archivo_cifrado, archivo_evaluaciones):

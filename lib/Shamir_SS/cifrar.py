@@ -38,7 +38,6 @@ def cifra(archivo, nombre_cifrado, shares_totales, shares_necesarios, llave):
     # El hash que usa mpz es una cadena hexadecimal y el que usa cifrar requiere bytes, por lo que hay que convertirlos
     llave = hash_llave(llave)
     cifra_archivo(archivo, nombre_cifrado, bytes.fromhex(llave))
-    print(mpz(llave, base=16))
     coeficientes = [mpz(llave, base=16)] + genera_aleatorios(shares_necesarios -1)
     shares = []
     for x in genera_aleatorios(shares_totales):
@@ -60,8 +59,10 @@ def cifra_archivo(nombre_archivo, nombre_cifrado, llave):
     # cifrarlo
     vector_inicial = Random.new().read(AES.block_size)
     cifrado = AES.new(llave, AES.MODE_CBC, vector_inicial)
-    texto_cifrado = cifrado.encrypt(
+    texto_cifrado = vector_inicial
+    texto_cifrado += cifrado.encrypt(
             pad(contenido.encode("utf-8"), AES.block_size))
+
     # escribir
     with open(nombre_cifrado, "wb") as f:
         f.write(texto_cifrado)
