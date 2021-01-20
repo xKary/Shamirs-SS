@@ -84,7 +84,30 @@ def descrifrar_archivo(valores_x,valores_y,arch_cifrado):
     """
     llave = interpolacion_Lagrange(valores_x,valores_y)
     print(llave)
-    llave_hex = llave.to_bytes(32, "big")
-    iv = arch_cifrado[:AES.block_size]
-    cipher = AES.new(llave_hex, AES.MODE_CBC,iv)
+    llave_b = llave.to_bytes(32, "big")
+    vector_inicial = arch_cifrado[:AES.block_size]
+    cipher = AES.new(llave_b, AES.MODE_CBC,vector_inicial)
     return cipher.decrypt(arch_cifrado[AES.block_size:])
+
+def descifrar(archivo_cifrado, archivo_evaluaciones):
+    archivo = open(archivo_cifrado, "r")
+    contenido_cifrado = archivo.read()
+    archivo.close()
+
+    x = []
+    y = []
+
+    evaluaciones = open(archivo_evaluaciones, "r")
+    while(True):
+        punto = evaluaciones.readline()
+        p = punto.split(", ")
+        x.append(p[1])
+        y.append(p[2])
+        if not linea:
+            break
+    evaluaciones.close()
+
+    if(len(x) == 0 or len(y) == 0 or len(x) != len(y)):
+        raise NameError('El archivo de evaluaciones está incompleto.')
+
+    contenido_descifrado = descrifrar_archivo(x,y,contenido)
