@@ -62,7 +62,7 @@ def interpolacion_Lagrange(valores_x,valores_y):
 
     return int(gmpy2.f_mod(p,PRIMO))
 
-def descrifrar_archivo(valores_x,valores_y,arch_cifrado):
+def descrifrar(valores_x,valores_y,contenido_cifrado):
     """
     Descrifrar archivo
 
@@ -86,27 +86,5 @@ def descrifrar_archivo(valores_x,valores_y,arch_cifrado):
     llave_bytes = bytes.fromhex(hex(llave)[2:])
     iv = arch_cifrado[:AES.block_size]
     cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
+
     return cipher.decrypt(arch_cifrado[AES.block_size:])
-
-def descifrar(archivo_cifrado, archivo_evaluaciones):
-    archivo = open(archivo_cifrado, "r")
-    contenido_cifrado = archivo.read()
-    archivo.close()
-
-    x = []
-    y = []
-
-    evaluaciones = open(archivo_evaluaciones, "r")
-    while(True):
-        punto = evaluaciones.readline()
-        p = punto.split(", ")
-        x.append(p[1])
-        y.append(p[2])
-        if not linea:
-            break
-    evaluaciones.close()
-
-    if(len(x) == 0 or len(y) == 0 or len(x) != len(y)):
-        raise NameError('El archivo de evaluaciones está incompleto.')
-
-    contenido_descifrado = descrifrar_archivo(x,y,contenido)

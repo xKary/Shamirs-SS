@@ -1,22 +1,23 @@
+import os
 from getpass import getpass
 
 def menu_cifrar():
-    archivo = input ('Archivo a cifrar: \t')
+    archivo = input('Archivo a cifrar:                  ')
     if not archivo_existe(archivo, 'No se encontró el archivo a cifrar'):
         return
-    archivo_cifrado = input ('Archivo de evaluaciones: \t')
-    evaluaciones = leer_natural ('Número de evaluaciones requeridas')
-    necesarios = leer_natural ('Número de puntos necesarios')
-    contrasenia = getpass("Contraseña: ")
+    archivo_cifrado = input('Archivo de evaluaciones:           ')
+    evaluaciones = leer_natural('Número de evaluaciones requeridas: ')
+    necesarios = leer_natural('Número de puntos necesarios:       ')
+    contrasenia = getpass('Contraseña:                        ')
 
     cifrar (archivo, archivo_cifrado, evaluaciones, necesarios, contrasenia)
 
 def menu_descifrar():
-    archivo_cifrado = input ('Archivo a descifrar: \t')
+    archivo_cifrado = input('Archivo a descifrar:       ')
     if not archivo_existe(archivo_cifrado, "No se encontró el archivo a descifrar"):
         return
 
-    archivo_evaluaciones = input ('Archivo con evaluaciones: \t')
+    archivo_evaluaciones = input ('Archivo con evaluaciones:  ')
     if not archivo_existe(archivo_evaluaciones, "No se econtró el archivo con las evaluaciones"):
         return
 
@@ -24,11 +25,11 @@ def menu_descifrar():
 
 def leer_natural(mensaje):
     natural = 0
-    correcto = false
+    correcto = False
     while not correcto:
         try:
             natural = int(input(mensaje))
-            correcto = true
+            correcto = True
         except ValueError:
             print ('Introduce un natural')
     return natural
@@ -36,8 +37,8 @@ def leer_natural(mensaje):
 def archivo_existe(arch, mensaje_error):
     if not os.path.isfile (arch):
         print (mensaje_error)
-        return false
-    return true
+        return False
+    return True
 
 salir = False
 opcion = ''
