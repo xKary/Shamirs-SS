@@ -56,7 +56,7 @@ def cifra_archivo(contenido, llave):
     cifrado = AES.new(llave, AES.MODE_CBC, vector_inicial)
     texto_cifrado = vector_inicial
     texto_cifrado += cifrado.encrypt(
-            pad(contenido.encode("utf-8"), AES.block_size))
+            pad(contenido, AES.block_size))
 
     return texto_cifrado
 

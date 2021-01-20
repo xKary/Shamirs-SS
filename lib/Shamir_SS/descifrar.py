@@ -64,7 +64,6 @@ def interpolacion_Lagrange(valores_x,valores_y):
     return int(gmpy2.f_mod(p,PRIMO))
 
 
-# def descrifrar(valores_x,valores_y,contenido_cifrado):
 def descifra(contenido_cifrado, valores_x, valores_y):
     """
     Descrifrar archivo
@@ -73,12 +72,12 @@ def descifra(contenido_cifrado, valores_x, valores_y):
 
     Parameters
     ----------
+    contenido_cifrado: arch
+        Archivo que se descifrará
     valores_x: list
         Valores x en los que el polinomio fue evaluado
     valores_y: list
         Resultado de la evaluación del polinomio en x
-    archCifrado: arch
-        Archivo que se descifrará
 
     Returns
     -------
@@ -86,13 +85,8 @@ def descifra(contenido_cifrado, valores_x, valores_y):
         Archivo descifrado
     """
     llave = interpolacion_Lagrange(valores_x,valores_y)
-    print("tal vez:" + hex(llave))
-    print("tal vez:" + hex(llave)[2:])
-    print("tal vez:" + hex(llave)[63] +".")
     llave_bytes = bytes.fromhex('0' + hex(llave)[2:])
-    # iv = arch_cifrado[:AES.block_size]
     iv = contenido_cifrado[:AES.block_size]
     cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
 
-    # return cipher.decrypt(arch_cifrado[AES.block_size:])
     return cipher.decrypt(contenido_cifrado[AES.block_size:])
