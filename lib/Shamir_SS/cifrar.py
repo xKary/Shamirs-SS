@@ -19,7 +19,7 @@ from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 import Crypto.Random as Random
 from Crypto.Util.Padding import pad
-from constantes import PRIMO
+from .constantes import PRIMO
 
 #python no tiene consts :c
 rand_state = gmpy2.random_state() # puede ser mas limpio?
