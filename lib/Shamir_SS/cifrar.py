@@ -17,6 +17,8 @@ import os
 from gmpy2 import mpz
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
+import Crypto.Random as Random
+from Crypto.Util.Padding import pad
 from constantes import PRIMO
 
 #python no tiene consts :c
@@ -36,12 +38,13 @@ def cifra(archivo, nombre_cifrado, shares_totales, shares_necesarios, llave):
     # El hash que usa mpz es una cadena hexadecimal y el que usa cifrar requiere bytes, por lo que hay que convertirlos
     llave = hash_llave(llave)
     cifra_archivo(archivo, nombre_cifrado, bytes.fromhex(llave))
+    print(mpz(llave, base=16))
     coeficientes = [mpz(llave, base=16)] + genera_aleatorios(shares_necesarios -1)
     shares = []
     for x in genera_aleatorios(shares_totales):
         y = evalua_polinomio(x, coeficientes)
         shares.append((x,y))
-    return escribe_shares(shares)
+    return shares
 
 def hash_llave(password):
     """Hashea de una cadena, la regresa como una cadena hexadecimal"""
@@ -57,9 +60,10 @@ def cifra_archivo(nombre_archivo, nombre_cifrado, llave):
     # cifrarlo
     vector_inicial = Random.new().read(AES.block_size)
     cifrado = AES.new(llave, AES.MODE_CBC, vector_inicial)
-    texto_cifrado = cipher.encrypt_and_digest(contenido)
+    texto_cifrado = cifrado.encrypt(
+            pad(contenido.encode("utf-8"), AES.block_size))
     # escribir
-    with open(nombre_cifrado, "w"):
+    with open(nombre_cifrado, "wb") as f:
         f.write(texto_cifrado)
     # borrar el viejito
     os.remove(nombre_archivo)
@@ -80,10 +84,3 @@ def evalua_polinomio(x, coeficientes):
         multiplicacion = gmpy2.f_mod(resultado * x_ajustado, PRIMO)
         resultado = gmpy2.f_mod(multiplicacion + coeficientes[i], PRIMO)
     return resultado
-
-def escribe_shares(shares):
-    """Construye una cadena que representa shares de cada punto (_x_,_y_)"""
-    share_string = ""
-    for (x,y) in shares:
-        share_string += f"Punto:({x},{y})\n"
-    return share_string
