@@ -5,6 +5,7 @@ def menu_cifrar():
     archivo = input('Archivo a cifrar:                  ')
     if not archivo_existe(archivo, 'No se encontró el archivo a cifrar'):
         return
+
     archivo_cifrado = input('Archivo de evaluaciones:           ')
     evaluaciones = leer_natural('Número de evaluaciones requeridas: ')
     necesarios = leer_natural('Número de puntos necesarios:       ')
@@ -29,7 +30,8 @@ def leer_natural(mensaje):
     while not correcto:
         try:
             natural = int(input(mensaje))
-            correcto = True
+            if(natural > 0):
+                correcto = True
         except ValueError:
             print ('Introduce un natural')
     return natural

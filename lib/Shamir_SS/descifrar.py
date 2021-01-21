@@ -84,7 +84,7 @@ def descrifrar(valores_x,valores_y,contenido_cifrado):
     """
     llave = interpolacion_Lagrange(valores_x,valores_y)
     llave_bytes = bytes.fromhex(hex(llave)[2:])
-    iv = arch_cifrado[:AES.block_size]
-    cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
+    vector_inicial = arch_cifrado[:AES.block_size]
+    cipher = AES.new(llave_bytes, AES.MODE_CBC,vector_inicial)
 
     return cipher.decrypt(arch_cifrado[AES.block_size:])
