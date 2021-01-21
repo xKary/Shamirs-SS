@@ -30,8 +30,7 @@ def polinomio_base(i,valores_x):
     denominador = 1
     for j in range(0,len(valores_x)):
         if j != i:
-            # numerador *= gmpy2.f_mod(mpz((-1) * valores_x[j]),PRIMO)
-            numerador *= gmpy2.f_mod(mpz(valores_x[j]),PRIMO)
+            numerador *= gmpy2.f_mod(-1 * mpz(valores_x[j]),PRIMO)
             denominador *= gmpy2.f_mod(mpz(valores_x[i] - valores_x[j]),PRIMO)
 
     deno_mod = gmpy2.invert(denominador,PRIMO)
