@@ -30,12 +30,12 @@ def polinomio_base(i,valores_x):
     denominador = 1
     for j in range(0,len(valores_x)):
         if j != i:
-            numerador *= gmpy2.f_mod((-1) * valores_x[j],PRIMO)
-            denominador *= gmpy2.f_mod(valores_x[i] - valores_x[j],PRIMO)
+            numerador *= gmpy2.f_mod(-1 * mpz(valores_x[j]),PRIMO)
+            denominador *= gmpy2.f_mod(mpz(valores_x[i] - valores_x[j]),PRIMO)
 
     deno_mod = gmpy2.invert(denominador,PRIMO)
 
-    return int(gmpy2.f_mod((numerador * deno_mod),PRIMO))
+    return int(gmpy2.f_mod(mpz(numerador * deno_mod),PRIMO))
 
 def interpolacion_Lagrange(valores_x,valores_y):
     """
@@ -62,7 +62,8 @@ def interpolacion_Lagrange(valores_x,valores_y):
 
     return int(gmpy2.f_mod(p,PRIMO))
 
-def descrifrar(valores_x,valores_y,contenido_cifrado):
+
+def descifra(contenido_cifrado, valores_x, valores_y):
     """
     Descrifrar archivo
 
@@ -70,12 +71,12 @@ def descrifrar(valores_x,valores_y,contenido_cifrado):
 
     Parameters
     ----------
+    contenido_cifrado: arch
+        Archivo que se descifrará
     valores_x: list
         Valores x en los que el polinomio fue evaluado
     valores_y: list
         Resultado de la evaluación del polinomio en x
-    archCifrado: arch
-        Archivo que se descifrará
 
     Returns
     -------
@@ -83,8 +84,11 @@ def descrifrar(valores_x,valores_y,contenido_cifrado):
         Archivo descifrado
     """
     llave = interpolacion_Lagrange(valores_x,valores_y)
-    llave_bytes = bytes.fromhex(hex(llave)[2:])
-    vector_inicial = arch_cifrado[:AES.block_size]
-    cipher = AES.new(llave_bytes, AES.MODE_CBC,vector_inicial)
+    llave_hex = hex(llave)[2:]
+    if len(llave_hex) & 1 == 1:
+        llave_hex = "0" + llave_hex
+    llave_bytes = bytes.fromhex(llave_hex)
+    iv = contenido_cifrado[:AES.block_size]
+    cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
 
-    return cipher.decrypt(arch_cifrado[AES.block_size:])
+    return cipher.decrypt(contenido_cifrado[AES.block_size:])
