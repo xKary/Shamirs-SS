@@ -84,7 +84,10 @@ def descifra(contenido_cifrado, valores_x, valores_y):
         Archivo descifrado
     """
     llave = interpolacion_Lagrange(valores_x,valores_y)
-    llave_bytes = bytes.fromhex('0' + hex(llave)[2:])
+    llave_hex = hex(llave)[2:]
+    if len(llave_hex) & 1 == 1:
+        llave_hex = "0" + llave_hex
+    llave_bytes = bytes.fromhex(llave_hex)
     iv = contenido_cifrado[:AES.block_size]
     cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
 
