@@ -23,15 +23,19 @@ from Crypto.Util.Padding import pad
 from .constantes import PRIMO
 
 def cifra(contenido, shares_totales, shares_necesarios, llave):
-    """Función de acceso al módulo, dado un archivo lo cifra y produce los shares necesarios para abrirlo
+    """
+    Función de acceso al módulo, cifra datos y produce los shares necesarios para abrirlo
 
-    archivo: nombre del archivo
-    nombre_cifrado: nombre del archivo de salida
-    shares_totales: número de shares por producir
-    shares_necesarios: número de shares necesarios para obtener la llave
-    password: contraseña en texto plano
-
-    regresa una lista de shares
+    @type contenido: bytes
+    @param contenido: bytes leidos de un archivo (que serán cifrados)
+    @type shares_totales: int
+    @param shares_totales: cantidad de shares que serán producidos (llaves que juntas pueden descifrar  al contenido)
+    @type shares_necesarios: int
+    @param shares_necesarios: cantidad mínima de shares necesarias para descifrar el contenido
+    @type llave: string
+    @param llave: llave con la que se cifrará el contenido
+    @rtype: (bytes, list)
+    @return: regresa una pareja ordenada con la primera entrada los bytes cifrados con llave hasheada, la segunda la lista de shares
     """
     # El hash que usa mpz es una cadena hexadecimal y el que usa cifrar requiere bytes, por lo que hay que convertirlos
     llave = hash_llave(llave)
@@ -44,24 +48,48 @@ def cifra(contenido, shares_totales, shares_necesarios, llave):
     return (contenido_cifrado, shares)
 
 def hash_llave(password):
-    """Hashea de una cadena, la regresa como una cadena hexadecimal"""
+    """
+    Obtiene el hash de una cadena.
+
+    @type: password: string
+    @param: password: cadena a hashear
+    @rtype: string
+    @return: cadena del hash de password en hexadecimal
+    """
     h = SHA256.new()
     h.update(password.encode("utf-8"))# update recibe bytes
     return h.hexdigest()
 
 def cifra_archivo(contenido, llave):
-    """Cifra y escribe archivo"""
+    """
+    Cifra contenido con llave, usando AES
+
+    @type contenido: bytes
+    @param contenido: bytes a cifrar.
+    @type llave: bytes
+    @param llave: 256 bits con los que se cifrará el contenido (en este caso producidos por sha256).
+    @rtype bytes
+    @return contenido cifrado
+    """
     # cifrarlo
     vector_inicial = Random.new().read(AES.block_size)
     cifrado = AES.new(llave, AES.MODE_CBC, vector_inicial)
     texto_cifrado = vector_inicial
     texto_cifrado += cifrado.encrypt(
             pad(contenido, AES.block_size))
-
     return texto_cifrado
 
 def genera_aleatorios(cantidad):
-    """Genera una lista de de longitud _cantidad_ de números aleatorios mpz"""
+    """
+    Genera aleatorios.
+
+    Genera una lista de números aleatorios entre 0 y la constante PRIMO.
+
+    @type cantidad: int
+    @param cantidad: cantidad de números aleatorios a generar i.e. la longitud de la lista
+    @rtype: list
+    @return: lista de números aleatorios
+    """
     numeros_aleatorios = []
     for i in range(0,cantidad):
         aleatorio = rand.randint(0,PRIMO)
@@ -69,7 +97,16 @@ def genera_aleatorios(cantidad):
     return numeros_aleatorios
 
 def evalua_polinomio(x, coeficientes):
-    """Evalua el polinomio definido por _coeficientes_ en _x_ usando el método de Horner."""
+    """
+    Evalua un polinomio en x
+
+    @type x: int
+    @param x: valor sobre el que se evalua el polinomio.
+    @type coeficientes: list
+    @param coeficientes: lista de coeficientes del polinomio en orden ascendiente ejemplo [4,1,2] -> 4+x+2x^2
+    @rtype int
+    @return regresa la evaluación del polinomio (todas estas operaciones son sobre el campo Z_PRIMO)
+    """
     resultado = mpz(0)
     x_ajustado = gmpy2.f_mod(x, PRIMO)
     for i in reversed(range(0, len(coeficientes))): # range es inclusivo en el primer argumento, exclusivo en el segundo
