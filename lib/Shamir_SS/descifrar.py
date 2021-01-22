@@ -1,30 +1,21 @@
+"""
+Módulo que se encarga de descrifrar el contenido del archivo indicado.
+"""
 import gmpy2
 from gmpy2 import mpz
 from Crypto.Cipher import AES
 from .constantes import PRIMO
-"""
-Descifrar
------------------------------------
-Módulo que se encarga de descrifrar
-"""
 
 def polinomio_base(i,valores_x):
     """
-    Polinomio de base Pi(x)
+    Función qué calcula el polinomio de base Pi(x).
 
-    Función qué calcula el polinomio de base Pi(x)
-
-    Parameters
-    ----------
-    i: int
-        índice del valor x en qué calculamos la base
-    valores_x: list
-        Valores x en los que el polinomio fue evaluado
-
-    Returns
-    -------
-    int
-        Resultado
+    @type  i: int
+    @param i: Índice del valor x en qué calculamos la base.
+    @type  valores_x: list
+    @param valores_x: Valores x en los que el polinomio fue evaluado.
+    @rtype:   int
+    @return:  Resultado de la evaluación.
     """
     numerador = 1
     denominador = 1
@@ -39,21 +30,17 @@ def polinomio_base(i,valores_x):
 
 def interpolacion_Lagrange(valores_x,valores_y):
     """
-    Interpolación de Lagrange
+    Interpolación de Lagrange.
 
-    Función qué calcula la interpolación de Lagrange evaluado en 0
+    Función qué calcula la interpolación de Lagrange evaluado en 0, a partir de t
+    puntos del polinomio.
 
-    Parameters
-    ----------
-    valores_x: list
-        Valores x en los que el polinomio fue evaluado
-    valores_y: list
-        Resultado de la evaluación del polinomio en x
-
-    Returns
-    -------
-    int
-        Evaluación del polinomio en 0
+    @type  valores_x: list
+    @param valores_x: Valores x en los que el polinomio fue evaluado.
+    @type  valores_y: list
+    @param valores_y: Resultado de la evaluación del polinomio en un punto x.
+    @rtype:   int
+    @return:  Evaluación del polinomio en 0.
     """
     p = 0;
     for i in range(0,len(valores_x)):
@@ -65,23 +52,18 @@ def interpolacion_Lagrange(valores_x,valores_y):
 
 def descifra(contenido_cifrado, valores_x, valores_y):
     """
-    Descrifrar archivo
+    Descrifrar archivo.
 
-    Función qué descrifra el archivo que recibe como parámetro
+    Función qué descrifra el archivo que recibe como parámetro.
 
-    Parameters
-    ----------
-    contenido_cifrado: arch
-        Archivo que se descifrará
-    valores_x: list
-        Valores x en los que el polinomio fue evaluado
-    valores_y: list
-        Resultado de la evaluación del polinomio en x
-
-    Returns
-    -------
-    arch
-        Archivo descifrado
+    @type contenido_cifrado: bytes
+    @param contenido_cifrado: Contenido a descrifrar.
+    @type  valores_x: list
+    @param valores_x: Valores x en los que el polinomio fue evaluado.
+    @type  valores_y: list
+    @param valores_y: Resultado de la evaluación del polinomio en un punto x.
+    @rtype:   bytes
+    @return:  Archivo descifrado.
     """
     llave = interpolacion_Lagrange(valores_x,valores_y)
     llave_hex = hex(llave)[2:]
