@@ -21,6 +21,8 @@ class testCifrar(unittest.TestCase):
         contenido = "texto a cifrar"
         (cifrado, shares) = cifrar.cifra(contenido.encode("utf-8"), 3, 2, "llave")
         self.assertEqual(len(shares), 3)
+        self.assertNotEqual(contenido.encode("utf-8"), cifrado)
+        self.assertFalse(contenido.encode("utf-8") in cifrado)
 
         shares.pop()
         valores = list(zip(*shares))
