@@ -17,6 +17,11 @@ class testCifrar(unittest.TestCase):
         self.assertEqual(cero, 0)
         self.assertEqual(diez, 10)
 
+        aleatorios = cifrar.genera_aleatorios(10_000)
+        aleatorios.sort()
+        for i in range(1, len(aleatorios)):
+            self.assertNotEqual(aleatorios[i-1], aleatorios[i])
+
     def test_cifra(self):
         contenido = "texto a cifrar"
         (cifrado, shares) = cifrar.cifra(contenido.encode("utf-8"), 3, 2, "llave")
