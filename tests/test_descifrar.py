@@ -33,8 +33,8 @@ class testDescifrar(unittest.TestCase):
         interpolacion = descifrar.interpolacion_Lagrange(valores_x, valores_y)
         self.assertEqual(interpolacion, 0)
         # poly (2x+47)
-        valores_x = [1, 356666666666666666666666666]#25 '6'
-        valores_y = [49,  713333333333333267680000000]
+        valores_x = [1,356666666666666666666666666]
+        valores_y = [49, 713333333333333333333333379]
         interpolacion = descifrar.interpolacion_Lagrange(valores_x, valores_y)
         self.assertEqual(interpolacion, 47)
 
