@@ -21,7 +21,11 @@
             $ python main.py
         ```
  - El programa iniciará su ejecución, le mostrará un menú de opciones y le pedirá la información necesaria para realizar la accion seleccionada.
-    - Cifrar
-    - Descifrar
 ### Tests
-El programa cuenta con tests para las clases Cifrar y Descifrar, para correrlo seguir laos siguientes pasos:
+Todo los módulos del programa cuentan con pruebas unitarias, para ejecutarlar ejecutar el siguiente comando:
+  - Compilar el test.
+    ```sh
+        $ python -m unittest -v
+    ```
+ ### Documentación
+ La documentación del programa se encuentra en la carpeta docs, para visualizarla abrir la página *docs/api/index.html* en el navegador de su preferencia.
