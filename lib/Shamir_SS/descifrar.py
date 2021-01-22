@@ -1,6 +1,7 @@
 import gmpy2
 from gmpy2 import mpz
 from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
 from .constantes import PRIMO
 """
 Descifrar
@@ -91,4 +92,5 @@ def descifra(contenido_cifrado, valores_x, valores_y):
     iv = contenido_cifrado[:AES.block_size]
     cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
 
-    return cipher.decrypt(contenido_cifrado[AES.block_size:])
+    resultado = cipher.decrypt(contenido_cifrado[AES.block_size:])
+    return str(unpad(resultado, AES.block_size), "utf-8")
