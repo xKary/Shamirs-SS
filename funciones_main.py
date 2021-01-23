@@ -15,8 +15,23 @@ def menu_cifrar():
     nombre_cifrado = leer_nombre_archivo('Archivo a cifrar:                                   ', 'No se encontró el archivo a cifrar')
     contenido = leer_archivo(nombre_cifrado)
     nombre_arch_evaluaciones = input('Archivo donde se guardarán las evaluaciones:        ')
-    n_evaluaciones = leer_natural('Número de evaluaciones a generar:                   ')
-    necesarios = leer_natural('Número de evaluaciones necesarias:                  ')
+
+    #Validar que el número de evaluaciones sea mayor a 2
+    while True:
+        n_evaluaciones = leer_natural('Número de evaluaciones a generar:                   ')
+        if(n_evaluaciones > 2):
+            break
+        else:
+            print('El número mínimo de llaves generadas debe ser 3.')
+
+    #Validar que las llaves necesarias sean menores o iguales a las generadas
+    while True:
+        necesarios = leer_natural('Número de evaluaciones necesarias:                  ')
+        if(necesarios <= n_evaluaciones and necesarios > 1):
+            break
+        else:
+            print('El número de llaves necesarias debe ser menor o igual al número de llaves generadas.')
+
     contrasenia = getpass('Contraseña:                        ')
 
     (contenido_cifrado, evaluaciones) = cifrar.cifra (contenido, n_evaluaciones, necesarios, contrasenia)

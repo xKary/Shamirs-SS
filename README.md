@@ -2,6 +2,10 @@
 - Alcántara Valdés José Angel
 - Del Río Pulido Erik Federico
 - Prado Oropeza Karina Vianey
+
+### Descripción
+Programa que implementA el esquema de Shamir para compartir la clave necesaria para descifrar un archivo. Dicha información debe poder ser accedida siempre que estén presentes, al menos T, de los n miembros de un grupo de personas con autorización para acceder a ella.
+
 ### Requerimientos previos
 
   - Tener [Python](https://www.python.org/downloads/) 3 o una versión superior.
