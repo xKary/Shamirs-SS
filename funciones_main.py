@@ -27,12 +27,12 @@ def menu_cifrar():
 
     #Validar que las llaves necesarias sean menores o iguales a las generadas
     while True:
-        necesarios = leer_natural('Número de evaluaciones necesarias:                  ')
+        necesarios = leer_entero('Número de evaluaciones necesarias:                  ')
         print(necesarios)
         if(necesarios <= n_evaluaciones and necesarios > 1):
             break
         else:
-            print('El número de llaves necesarias debe ser menor o igual al número de llaves generadas.')
+            print('El número de llaves necesarias debe ser menor o igual al número de llaves generadas, y mayor a 1.')
 
     contrasenia = getpass('Contraseña:                        ')
 
