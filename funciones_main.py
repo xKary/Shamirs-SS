@@ -41,6 +41,7 @@ def menu_cifrar():
     # escribir
     escribir_archivo(nombre_cifrado + ".aes", contenido_cifrado)
     escribir_archivo(nombre_arch_evaluaciones, evaluaciones_toString(evaluaciones).encode())
+    print("Se cifró correctamente\n")
 
 def menu_descifrar():
     """
@@ -59,9 +60,11 @@ def menu_descifrar():
         # escribir
         nom_original = nombre_original(archivo_cifrado)
         escribir_archivo(nom_original, contenido_descifrado)
+        print("Se descifró correctamente\n")
 
     except ValueError:
         print("\nNo se pudo descifrar el archivo")
+
 
 def leer_archivo(nombre):
     """

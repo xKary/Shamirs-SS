@@ -75,4 +75,4 @@ def descifra(contenido_cifrado, valores_x, valores_y):
     cipher = AES.new(llave_bytes, AES.MODE_CBC,iv)
 
     resultado = cipher.decrypt(contenido_cifrado[AES.block_size:])
-    return str(unpad(resultado, AES.block_size), "utf-8")
+    return unpad(resultado, AES.block_size)

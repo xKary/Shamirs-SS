@@ -32,7 +32,7 @@ class testCifrar(unittest.TestCase):
         shares.pop()
         valores = list(zip(*shares))
         descifrado = descifrar.descifra(cifrado, valores[0], valores[1])
-        self.assertEqual(contenido, descifrado)
+        self.assertEqual(contenido, str(descifrado, "utf-8"))
 
 if __name__ == '__main__':
     unittest.main()

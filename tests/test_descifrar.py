@@ -42,7 +42,7 @@ class testDescifrar(unittest.TestCase):
         (texto_cifrado, shares) = cifrar.cifra("Prueba :!".encode("utf-8"), 10, 3, "llave")
         valores = list(zip(*shares))
         resultado = descifrar.descifra(texto_cifrado, valores[0], valores[1])
-        self.assertEqual("Prueba :!", resultado)
+        self.assertEqual("Prueba :!", str(resultado, "utf-8"))
 
 if __name__ == '__main__':
     unittest.main()
