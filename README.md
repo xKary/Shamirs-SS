@@ -1,6 +1,6 @@
-# Shamir Secret Sharing
+# Shamir's Secret Sharing
 - Alcántara Valdés José Angel
-- Del Río Pulido Erik Federico
+- del Río Pulido Erik Federico
 - Prado Oropeza Karina Vianey
 
 ### Descripción

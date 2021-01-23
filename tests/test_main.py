@@ -45,9 +45,9 @@ class testMain(unittest.TestCase):
         self.assertEqual(nombre_orig, 'prueba.txt')
 
     @mock.patch('funciones_main.input', create = True)
-    def test_leer_natural(self,mocked_input):
+    def test_leer_entero(self,mocked_input):
         mocked_input.side_effect = '5'
-        n_main = funciones_main.leer_natural('Natural')
+        n_main = funciones_main.leer_entero('Natural')
         self.assertEqual(n_main, 5)
 
     def test_archivo_existe(self):
