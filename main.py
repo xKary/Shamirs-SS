@@ -1,18 +1,24 @@
-"""
+'''
 Módulo que se encarga de la interacción con el usuario.
-"""
+'''
 import funciones_main
+from rich import print
+from rich.style import Style
+from rich.console import Console
 
+console = Console()
 salir = False
 opcion = ''
 
-while not salir:
-    print ('\nMenú')
-    print ('C. Cifrar')
-    print ('D. Descifrar')
-    print ('S. Salir')
+advertencia = Style(color = 'red', bold = True)
+style = 'bold white'
 
-    print ('Elige una opcion: \t', end = '')
+console.print('Bienvenido', style = style, justify = 'center')
+console.print('\nMenú\n', style = style, justify = 'center')
+
+while not salir:
+    console.print('[red]C[/] Cifrar  [blue]D[/] Descifrar  [green]S[/] Salir\n', style = style, justify = 'center')
+    print('[bold white]Elige una opcion: \t', end = '')
 
     opcion = input().upper()
 
@@ -20,15 +26,15 @@ while not salir:
         try:
             funciones_main.menu_cifrar()
         except FileNotFoundError:
-            print("No se encontró el archivo a cifrar.")
+            console.print('\nNo se encontró el archivo a cifrar.\n', style = advertencia, justify = 'center')
     elif opcion == 'D':
         try:
             funciones_main.menu_descifrar()
         except FileNotFoundError:
-            print("No se pudieron encontrar los archivos.")
+            console.print('\nNo se pudieron encontrar los archivos.\n', style = advertencia, justify = 'center')
     elif opcion == 'S':
         salir = True
     else:
-        print ('Introduce una opción válida.')
+        console.print('\nIntroduce una opción válida.\n', style = 'magenta3', justify = 'center')
 
-print ('Hasta luego.')
+console.print('¡Hasta luego!\n', style = style, justify = 'center')

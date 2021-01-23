@@ -4,6 +4,8 @@ con el usuario.
 """
 import os
 from getpass import getpass
+from rich import print
+from rich.console import Console
 from lib.Shamir_SS import cifrar, descifrar
 
 def menu_cifrar():
@@ -12,27 +14,26 @@ def menu_cifrar():
 
     Función que pide un archivo en la línea de comandos, y lo cifra.
     """
-    nombre_cifrado = leer_nombre_archivo('Archivo a cifrar:                                   ', 'No se encontró el archivo a cifrar')
+    nombre_cifrado = leer_nombre_archivo('\nArchivo a cifrar:                                   ', 'No se encontró el archivo a cifrar')
     contenido = leer_archivo(nombre_cifrado)
+    print
     nombre_arch_evaluaciones = input('Archivo donde se guardarán las evaluaciones:        ')
 
     #Validar que el número de evaluaciones sea mayor a 2
     while True:
         n_evaluaciones = leer_entero('Número de evaluaciones a generar:                   ')
-        print(n_evaluaciones)
         if(n_evaluaciones > 2):
             break
         else:
-            print('El número mínimo de llaves generadas debe ser 3.')
+            print('[italic yellow]El número mínimo de llaves generadas debe ser 3.')
 
     #Validar que las llaves necesarias sean menores o iguales a las generadas
     while True:
         necesarios = leer_entero('Número de evaluaciones necesarias:                  ')
-        print(necesarios)
         if(necesarios <= n_evaluaciones and necesarios > 1):
             break
         else:
-            print('El número de llaves necesarias debe ser menor o igual al número de llaves generadas, y mayor a 1.')
+            print('[italic yellow]El número de llaves necesarias debe ser menor o igual al número de llaves generadas, y mayor a 1.')
 
     contrasenia = getpass('Contraseña:                        ')
 
@@ -41,7 +42,7 @@ def menu_cifrar():
     # escribir
     escribir_archivo(nombre_cifrado + ".aes", contenido_cifrado)
     escribir_archivo(nombre_arch_evaluaciones, evaluaciones_toString(evaluaciones).encode())
-    print("Se cifró correctamente\n")
+    print("\n[bold green]El archivo se cifró con éxito.\n")
 
 def menu_descifrar():
     """
@@ -49,8 +50,8 @@ def menu_descifrar():
 
     Función qué descrifra pide un archivo y evaluaciones, y lo descifra
     """
-    archivo_cifrado = leer_nombre_archivo('Archivo a descifrar:       ', 'No se encontró el archivo a descifrar')
-    archivo_evaluaciones = leer_nombre_archivo('Archivo con evaluaciones:  ', 'No se econtró el archivo con las evaluaciones')
+    archivo_cifrado = leer_nombre_archivo('\nArchivo a descifrar:       ', '[bold red]No se encontró el archivo a descifrar')
+    archivo_evaluaciones = leer_nombre_archivo('Archivo con evaluaciones:  ', '[bold red]No se econtró el archivo con las evaluaciones')
     contenido = leer_archivo(archivo_cifrado)
     (xs, ys) = leer_evaluaciones(archivo_evaluaciones)
 
@@ -60,10 +61,10 @@ def menu_descifrar():
         # escribir
         nom_original = nombre_original(archivo_cifrado)
         escribir_archivo(nom_original, contenido_descifrado)
-        print("Se descifró correctamente\n")
+        print("\n[bold green]El archivo se descifró con éxito.\n")
 
     except ValueError:
-        print("\nNo se pudo descifrar el archivo")
+        print("\n[bold red blink]No se pudo descifrar el archivo")
 
 
 def leer_archivo(nombre):
@@ -160,7 +161,7 @@ def leer_entero(mensaje):
             entero = int(input(mensaje))
             correcto = True
         except ValueError:
-            print ('Introduce un entero')
+            print('[yellow]Introduce un entero.')
     return entero
 
 def leer_nombre_archivo(mensaje, mensajeError):
