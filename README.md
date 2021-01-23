@@ -4,7 +4,7 @@
 - Prado Oropeza Karina Vianey
 
 ### Descripción
-Programa que implementA el esquema de Shamir para compartir la clave necesaria para descifrar un archivo. Dicha información debe poder ser accedida siempre que estén presentes, al menos T, de los n miembros de un grupo de personas con autorización para acceder a ella.
+Programa que cifra un archivo e implementa el esquema de Shamir para compartir la clave necesaria para descifrar dicho archivo. Siempre y cuando se cuente con al menos t de las n llaves que se generaron.
 
 ### Requerimientos previos
 
@@ -27,9 +27,8 @@ Programa que implementA el esquema de Shamir para compartir la clave necesaria p
  - El programa iniciará su ejecución, le mostrará un menú de opciones y le pedirá la información necesaria para realizar la accion seleccionada.
 ### Tests
 Todo los módulos del programa cuentan con pruebas unitarias, para ejecutarlar ejecutar el siguiente comando:
-  - Compilar el test.
-    ```sh
+```sh
         $ python -m unittest -v
-    ```
+```
  ### Documentación
  La documentación del programa se encuentra en la carpeta docs, para visualizarla abrir la página *docs/api/index.html* en el navegador de su preferencia.
