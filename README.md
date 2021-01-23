@@ -12,6 +12,7 @@ Programa que cifra un archivo e implementa el esquema de Shamir para compartir l
   - Tener los siguientes módulos:
      - [gmpy2](https://pypi.org/project/gmpy2/2.1.0a2/)
      - [pycryptodome](https://pypi.org/project/pycryptodome/)
+     - [Rich](https://pypi.org/project/rich/)
 
 ### Usar el programa
   - Descargar el la carpera Shamirs-SS en su ordenador.
