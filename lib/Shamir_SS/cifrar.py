@@ -87,14 +87,14 @@ def genera_aleatorios(cantidad):
 
     @type cantidad: int
     @param cantidad: cantidad de números aleatorios a generar i.e. la longitud de la lista
-    @rtype: set
+    @rtype: list
     @return: lista de números aleatorios
     """
     numeros_aleatorios = set()
-    while len(numeros_aleatorios) < cantidad
+    while len(numeros_aleatorios) < cantidad:
         aleatorio = rand.randint(1,PRIMO)
         numeros_aleatorios.add(aleatorio)
-    return numeros_aleatorios
+    return list(numeros_aleatorios)
 
 def evalua_polinomio(x, coeficientes):
     """

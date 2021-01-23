@@ -2,7 +2,6 @@ import unittest
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+"/../lib")
-print(sys.path)
 from Shamir_SS import descifrar
 from Shamir_SS import cifrar
 
