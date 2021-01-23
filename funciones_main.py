@@ -18,7 +18,8 @@ def menu_cifrar():
 
     #Validar que el número de evaluaciones sea mayor a 2
     while True:
-        n_evaluaciones = leer_natural('Número de evaluaciones a generar:                   ')
+        n_evaluaciones = leer_entero('Número de evaluaciones a generar:                   ')
+        print(n_evaluaciones)
         if(n_evaluaciones > 2):
             break
         else:
@@ -27,6 +28,7 @@ def menu_cifrar():
     #Validar que las llaves necesarias sean menores o iguales a las generadas
     while True:
         necesarios = leer_natural('Número de evaluaciones necesarias:                  ')
+        print(necesarios)
         if(necesarios <= n_evaluaciones and necesarios > 1):
             break
         else:
@@ -137,27 +139,26 @@ def nombre_original(nombre):
     nombre_orig = nombre[:pos]
     return nombre_orig
 
-def leer_natural(mensaje):
+def leer_entero(mensaje):
     """
-    Leer Natural
+    Leer Entero
 
-    Función que lee valida que el usuario ingrese un número natural.
+    Función que lee valida que el usuario ingrese un número entero.
 
     @type  mensaje: string
-    @param mensaje: Mensaje que se muestra al pedir el natural.
+    @param mensaje: Mensaje que se muestra al pedir el entero.
     @rtype:   int
-    @return:  Número con el natural.
+    @return:  Número con el entero.
     """
-    natural = 0
+    entero = 0
     correcto = False
     while not correcto:
         try:
-            natural = int(input(mensaje))
-            if(natural > 0):
-                correcto = True
+            entero = int(input(mensaje))
+            correcto = True
         except ValueError:
-            print ('Introduce un natural')
-    return natural
+            print ('Introduce un entero')
+    return entero
 
 def leer_nombre_archivo(mensaje, mensajeError):
     """
