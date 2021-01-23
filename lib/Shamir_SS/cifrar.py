@@ -51,8 +51,8 @@ def hash_llave(password):
     """
     Obtiene el hash de una cadena.
 
-    @type: password: string
-    @param: password: cadena a hashear
+    @type password: password: string
+    @param password: password: cadena a hashear
     @rtype: string
     @return: cadena del hash de password en hexadecimal
     """
@@ -87,13 +87,13 @@ def genera_aleatorios(cantidad):
 
     @type cantidad: int
     @param cantidad: cantidad de números aleatorios a generar i.e. la longitud de la lista
-    @rtype: list
+    @rtype: set
     @return: lista de números aleatorios
     """
-    numeros_aleatorios = []
-    for i in range(0,cantidad):
-        aleatorio = rand.randint(0,PRIMO)
-        numeros_aleatorios.append(aleatorio)
+    numeros_aleatorios = set()
+    while len(numeros_aleatorios) < cantidad
+        aleatorio = rand.randint(1,PRIMO)
+        numeros_aleatorios.add(aleatorio)
     return numeros_aleatorios
 
 def evalua_polinomio(x, coeficientes):
